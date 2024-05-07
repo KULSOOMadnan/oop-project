@@ -4,17 +4,18 @@ import chalk from "chalk";
 
 console.log(chalk.gray(`\n\t-------------------------------------------------------------------\n`));
 
-
+// Define the Person class to manage user personality
 class Person{
 
     // declare a field to represnt a class 
     private personality : string;
 
-    // constructor 
+    // Constructor to initialize the personality property
       constructor(){
         this.personality = ""
     }
-    //class method which take one argumment 
+    
+    // Method to set personality based on user input
     askQuestion(answer:string){
      //condition regarding parameter
         switch (answer) {
@@ -27,18 +28,20 @@ class Person{
             default:
                 this.personality = " Still Mystery";
         }
+        // Print the user's personality to the console
         console.log(chalk.magenta(`\nYou are ${this.personality}\n`));
     
 
     }
-
+    // Method to get the current personality
     GetPersonality(){
         return this.personality
     }
 
 }
-
+// Function to prompt the user with a personality question
 async function askquestion(){
+    // Ask the user to choose between extrovert and introvert
     let que = await inquirer.prompt(
         {
             name: "ans",
@@ -47,14 +50,16 @@ async function askquestion(){
             
         }
     )
-        Mystudent.askQuestion(que.ans)
+        // Set the user's personality based on the answer
+         Mystudent.askQuestion(que.ans)
     
 }
 
+// Define the Student class to manage user details
 class Student extends Person{
 
     private _name : string;
-    
+     // Constructor to initialize the name property
     constructor(){
         super()
         this._name = "";
@@ -62,7 +67,7 @@ class Student extends Person{
         
         
     }
-
+    // Getter and setter for name property
     get name(){
         return this._name
         
@@ -74,8 +79,10 @@ class Student extends Person{
     
     
 }
-
+// Create a new instance of the Student class
 let Mystudent  = new Student()
+
+//taking user personality 
 async function Name() {
     await askquestion()
     let ask = await inquirer.prompt(
@@ -83,23 +90,22 @@ async function Name() {
         name : "name",
         type: "input",
         message:chalk.rgb(64, 224, 208)("what's you name :"),
+        // Validate that the name contains only alphabetical characters
         validate :(input) => !input||/^[A-Za-z]+$/.test(input)? true : "please enter only alphabaticl character "
       }
-    )
+    )   
+        // Set the user's name based on the input
         Mystudent.name = ask.name
+        // Print the user's name and personality to the console
         console.log(chalk.magenta(`\nYour name is ${Mystudent.name} and your peronality type is "${Mystudent.GetPersonality()}"\n`));
    
 }
 
 class Zodiac extends Student{
-    
-
-    constructor(){
+      constructor(){
         super()
     }
-    
-    
-        
+  // Method to determine zodiac sign based on date and month   
     zodicSign(date : number , month : number){
         
         switch (month) {
@@ -159,17 +165,13 @@ class Zodiac extends Student{
         
         
     }
-
-
-  
-
 }
 
-
 let star = new Zodiac()
-
+// Function to prompt the user for their date and month of birth
 async function stars() {
     await Name()
+    // Ask the user to enter their date and month of birth
     let Zs= await inquirer.prompt(
         
         [
@@ -186,12 +188,16 @@ async function stars() {
             }
         ]
     )
+    //  Determine the user's zodiac sign based on the input
     let signs = star.zodicSign(Zs.date,Zs.month)
+    // Print the user's zodiac sign to the console
     console.log(chalk.magentaBright.bold(`\nAccording to you date of birth and month your zodiac sign is ${chalk.cyanBright(signs)}!`));
     console.log(chalk.gray(`\n\t-------------------------------------------------------------------\n`));
     
 
 }
+
+// Start the program by prompting the user for their information
 stars()
 
 
